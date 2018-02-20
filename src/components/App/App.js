@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 //import logo from './logo.svg';
 import './App.css';
-import SearchBar from '../SearchBar/Searchbar';
+import SearchBar from '../searchBar/searchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
 import Spotify from '../../util/Spotify';
@@ -10,7 +10,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchResults : 'Temporary', //temporary value for searchResults
+      searchResults : [], //temporary value for searchResults
       playlistname : 'Temporary',
       playlistTracks : []
     };
@@ -19,7 +19,7 @@ class App extends Component {
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
-    this.search = this.search.bind(this);
+    this.searchSpotify = this.searchSpotify.bind(this);
 
   };
 
@@ -30,7 +30,7 @@ class App extends Component {
   Set the new state of the playlist */
 
   addTrack(track) {
-    if (!this.playlistTracks.track.id) {  // Step 41
+    if (!this.state.playlistTracks.includes(track)) {  // Step 41
       this.setState({playlistTracks: this.playListTracks.splice(this.playListTracks.count,0,track.id)}) //add a track at the end of the playlist
     }
   };
@@ -42,7 +42,7 @@ class App extends Component {
   */
 
   removeTrack(track) {
-    if (this.playlistTracks.track.id) { //step 49
+    if (this.state.playlistTracks.includes(track)) { //step 49
       this.setState({playListTracks: this.playlistTracks.splice(this.playListTracks.indexOf(track),1)}) //remove the track from playlist at index of given track
     }
   };
@@ -75,10 +75,10 @@ class App extends Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
-          <SearchBar onSearch = {this.searchSpotify(SearchBar.target.value)}/>
+          <SearchBar onSearch = {this.searchSpotify}/>
           <div className="App-playlist">
             <SearchResults searchResults = {this.state.searchResults}
-                           onAdd = {this.addTrack}/> // step 42
+/*step 42*/                onAdd = {this.addTrack}/> 
             <Playlist playlistname = {this.state.playlistname}
                       playlistTracks = {this.state.playlistTracks}
                       onRemove = {this.removeTrack} // step 50

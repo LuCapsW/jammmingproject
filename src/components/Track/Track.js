@@ -1,5 +1,5 @@
-import React from 'react';
-import '.Track.css';
+import React, { Component } from 'react';
+import './Track.css';
 
 class Track extends Component {
   constructor(props) {
@@ -10,18 +10,27 @@ class Track extends Component {
 
   }
 
-  renderAction() {
-    if (isRemoval) {
-      return <a className = "Track-action" href = '-'
-                onClcik = {this.removeTrack}> //step 55
+  /* renderAction:
+  displays a - anchor tag if the isRemoval property is true,
+  and a + anchor tag if the isRemoval property is false.
+  */
+
+  renderAction() { //step 27
+    if (this.props.isRemoval) {
+      return <a className = "Track-action"
+                onClick = {this.removeTrack}> '-' </a> //step 55
     } else {
-      return <a className "Track-action" href = '+'
-                onClick = {this.addTrack}> //step 47
+      return <a className = "Track-action"
+                onClick = {this.addTrack}> '+' </a> //step 47
     }
   };
 
   addTrack() {
     this.props.onAdd(this.props.track) // step 45
+  };
+
+  removeTrack(track) { //step 53
+    this.props.onRemove(this.props.track)
   };
 
   render() {
