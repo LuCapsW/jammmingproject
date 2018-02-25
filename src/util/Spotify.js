@@ -5,10 +5,11 @@ let accessToken = '';
 let expirationTime = '';
 
 const Spotify = {
-  getAccessToken(accessToken) {
-    if (accessToken) {
+  getAccessToken() {
+    if (accessToken !== '') { //step 78
       return accessToken;
     } else {
+      return fetch(`https://accounts.spotify.com/authorize?client_id=${clientID}&redirect_uri=${redirect_uri}&response_type=token`);
       accessToken = (`https://accounts.spotify.com/authorize?client_id=${clientID}&redirect_uri=${redirect_uri}&response_type=token`).match(/access_token=([^&]*)/);
       expirationTime =  (`https://accounts.spotify.com/authorize?client_id=${clientID}&redirect_uri=${redirect_uri}&response_type=token`).match(/expires_in=([^&]*)/); //step 79 & 80
       window.setTimeout(() => accessToken = '', expirationTime * 1000);
@@ -17,9 +18,10 @@ const Spotify = {
   },
 
   search(term) {
+    this.getAccessToken();
     return fetch(`https://api.spotify.com/v1/search?type=track&q=${term}`, {
       headers: {
-        Authorization: `${accessToken}`
+        Authorization: `Bearer ${accessToken}`
       }
     }).then(response => {
       return response.json();

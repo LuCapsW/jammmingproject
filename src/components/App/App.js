@@ -78,7 +78,7 @@ class App extends Component {
           <SearchBar onSearch = {this.searchSpotify}/>
           <div className="App-playlist">
             <SearchResults searchResults = {this.state.searchResults}
-/*step 42*/                onAdd = {this.addTrack}/> 
+/*step 42*/                onAdd = {this.addTrack}/>
             <Playlist playlistname = {this.state.playlistname}
                       playlistTracks = {this.state.playlistTracks}
                       onRemove = {this.removeTrack} // step 50
