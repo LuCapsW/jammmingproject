@@ -30,8 +30,14 @@ class App extends Component {
   Set the new state of the playlist */
 
   addTrack(track) {
-    if (!this.state.playlistTracks.includes(track)) {  // Step 41
-      this.setState({playlistTracks: this.playListTracks.splice(this.playListTracks.count,0,track.id)}) //add a track at the end of the playlist
+/*    if (!this.state.playlistTracks.includes(track)) {  // Step 41
+      this.setState({playlistTracks: this.state.playlistTracks.splice(this.state.playlistTracks.count,0,track.id)}); //add a track at the end of the playlist
+*/
+      if (this.state.playlistTracks.indexOf(track) === -1) {
+      const newPlayList = this.state.playlistTracks;
+      newPlayList.push(track);
+      this.setState({playListTracks: newPlayList})
+  //    this.setState({playlistTracks: this.state.playlistTracks.push(track)});
     }
   };
 
@@ -42,8 +48,12 @@ class App extends Component {
   */
 
   removeTrack(track) {
-    if (this.state.playlistTracks.includes(track)) { //step 49
-      this.setState({playListTracks: this.playlistTracks.splice(this.playListTracks.indexOf(track),1)}) //remove the track from playlist at index of given track
+    if (this.state.playlistTracks.indexOf(track) > -1) { //step 49
+      const newPlayList = this.state.playListTracks;
+      newPlayList.splice(newPlayList.indexOf(track),1);
+//      newPlayList.filter(this.playlistTracks.indexOf(track));
+//      this.setState({playListTracks: his.playlistTracks.splice(this.playListTracks.indexOf(track),1)}) //remove the track from playlist at index of given track
+      this.setState({playListTracks: newPlayList});
     }
   };
 
