@@ -59,44 +59,47 @@ const Spotify = {
 
 /*
 The .savePlaylist() method accepts a playlist name and an array of track URIs. It makes the following three requests to the Spotify API:
-
 GET current user's ID
 POST a new playlist with the input name to the current user's Spotify account. Receive the playlist ID back from the request.
 POST the track URIs to the newly-created playlist, referencing the current user's account (ID) and the new playlist (ID)
 */
 
   savePlaylist(playlistName, trackURIs) {
+    let currentAccessToken = accessToken; //step 91
+    let headers =
+      {
+//        "Authorization": currentAccessToken,
+        Authorization: `Bearer ${currentAccessToken}`,
+        "Content-Type": 'application/json'
+      };
+    let currentUserID = '';
     if (playlistName && trackURIs) {  //step 90
-      let currentAccessToken = accessToken; //step 91
-      let headers =
-        {
-          "Authorization": currentAccessToken,
-          "Content-Type": 'application/json'
-        };
-      let currentUserID = '';
       return fetch(`https://api.spotify.com/v1/me`, {  //step 92
         headers: headers
       }).then(response => {
         return response.json();
-      }).then(jsonResponse => { //line 99
+      }).then(jsonResponse => {
         currentUserID = jsonResponse.id;
         return fetch(`https://api.spotify.com/v1/users/${currentUserID}/playlists`, {
-          headers: `${headers}`,
+//          headers: `${headers}`,
+          headers: headers,
           method: 'POST',
-          body: JSON.stringify(`${currentUserID}`)
+          body: JSON.stringify({name: playlistName})
         }).then(response => {
           return response.json();
         }).then(jsonResponse => {
-           playlistID = jsonResponse.id; //step 94
-           return fetch(`https://api.spotify.com/v1/users/${currentUserID}/playlists/${playlistID}/tracks?uris=${trackURIs}`,
+           let playlistID = jsonResponse.id; //step 94
+           return fetch(`https://api.spotify.com/v1/users/${currentUserID}/playlists/${playlistID}/tracks`,
               {
-                headers: `${headers}`,
-                method: 'POST'
+//                headers: `${headers}`,
+                headers: headers,
+                method: 'POST',
+                body: JSON.stringify({uris: trackURIs})
               }
-            )
+            ).then(response => response.json())
       });
     });
-  }
-};
-
+  };
+}
+}
 export default Spotify;

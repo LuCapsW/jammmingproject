@@ -67,7 +67,6 @@ class App extends Component {
   };
 
   savePlaylist(playListName, playListTracks) {
-    alert(this.state.playlistname);
     let trackURIs = [];
     this.state.playListTracks.map((x) => trackURIs.push(x.uri)
   );
